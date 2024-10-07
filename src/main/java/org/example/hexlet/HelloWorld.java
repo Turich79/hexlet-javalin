@@ -7,15 +7,19 @@ import org.example.hexlet.dto.courses.CoursePage;
 import org.example.hexlet.dto.courses.CoursesPage;
 import org.example.hexlet.model.Course;
 import org.example.hexlet.model.User;
+import org.example.hexlet.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class HelloWorld {
     public static void main(String[] args) {
-        less10();
+        less12();
+//        less11();
+//        less10();
 //        myTest();
 //        less8(); ////этот урок надо пересмотреть и доделать!!!
 //        less7();
@@ -23,6 +27,37 @@ public class HelloWorld {
 //        less5();
 //        less4();
 //        less3();
+    }
+
+    public static void less12() {
+        var app = Javalin.create(config -> {
+            config.bundledPlugins.enableDevLogging();
+            config.fileRenderer(new JavalinJte());
+        });
+        app.get("/", ctx -> ctx.render("index.jte"));
+
+        app.get("/users", ctx -> {
+            List<User> users = UserRepository.getEntities();
+            var page = new UsersPage(users);
+            ctx.render("layout/users.jte", model("page", page));
+        });
+
+        app.get("/users/build", ctx -> {
+            ctx.render("users/build.jte");
+        });
+
+        app.post("/users", ctx -> {
+            var name = ctx.formParam("name").trim();
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            var email = ctx.formParam("email").trim().toLowerCase();
+            var password = ctx.formParam("password");
+
+            var user = new User(name, email, password);
+            UserRepository.save(user);
+            ctx.redirect("/users");
+        });
+
+        app.start(7070);
     }
 
     public static void myTest() {
@@ -71,7 +106,7 @@ public class HelloWorld {
 
         app.get("/courses/{id}", ctx -> {
             var id = ctx.pathParamAsClass("id", Integer.class).get();
-            var course = courses.stream().filter(c -> c.getId() == id).findFirst().get();
+            var course = courses.stream().filter(c -> c.getId().equals(id)).findFirst().get();
             var page = new CoursePage(course);
             ctx.render("courses/show.jte", model("page", page));
         });
@@ -92,10 +127,10 @@ public class HelloWorld {
         users.add(new User(3l, "Sasha", "a3@aa.ru", "1111"));
 
         app.get("/", ctx -> {
-            var id = ctx.pathParamAsClass("id", Integer.class).get();
-//            var usersString =users.stream().map(u->u.getName()).toList().toArray();
-            String[] usersString = {"Vasya", "Misha"};
-            var page = new UsersPage(usersString);
+//            var id = ctx.pathParamAsClass("id", Integer.class).get();
+//            var usersString =users.stream().map(u->u.getName()).toList();
+//            String[] usersString = {"Vasya", "Misha"};
+            var page = new UsersPage(UserRepository.getEntities());
             ctx.render("layout/page.jte", model("page", page));
         });
 
@@ -104,18 +139,6 @@ public class HelloWorld {
     }
 
     public static void less7() {
-//        var app = Javalin.create(config -> {
-//            config.bundledPlugins.enableDevLogging();
-//        });
-        // Название параметров мы выбрали произвольно
-//        app.get("/courses/{id}", ctx -> {
-//            var id = ctx.pathParam("id");
-//            var course = /* Курс извлекается из базы данных */
-//                    // Предполагаем, что у курса есть метод getName()
-////                    ctx.result("<h1>" + course.getName() + "</h1>");
-//                    ctx.result("<h1>Course</h1>");
-//        });
-
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
             config.fileRenderer(new JavalinJte());
@@ -129,10 +152,8 @@ public class HelloWorld {
         courses.add(new Course(3, "progging3", "course about progging3"));
 
         app.get("/courses/{id}", ctx -> {
-//            var id = ctx.pathParam("id");
             var id = ctx.pathParamAsClass("id", Integer.class).get();
-//            var course = courses.get(id);//new Course("progging","course about progging");
-            var course = courses.stream().filter(c -> c.getId() == id).findFirst().get();
+            var course = courses.stream().filter(c -> c.getId().equals(id)).findFirst().get();
             var page = new CoursePage(course);
             ctx.render("courses/show.jte", model("page", page));
         });

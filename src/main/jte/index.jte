@@ -11,6 +11,7 @@
         <main>
         <h1 class="text-body-emphasis">Привет, Хекслет!</h1>
         <p>Javalin + jte</p>
+        <a href="/users/build">New User</a>
         </main>
     </div>
     </body>
