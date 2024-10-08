@@ -13,6 +13,7 @@
             <input type="search" name="description" value="${page.getDescription()}"/>
             <input type="submit" value="Search" />
         </form>
+        <a href="/courses/build">Добавить курс</a>
         @if(page.getCourses().isEmpty())
             <p>Пока не добавлено ни одного курса</p>
         @else
