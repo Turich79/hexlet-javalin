@@ -1,8 +1,9 @@
 package gg.jte.generated.ondemand.courses;
+import org.example.hexlet.NamedRoutes;
 import org.example.hexlet.dto.courses.CoursesPage;
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "courses/index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,1,1,9,9,9,9,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,16,16,18,18,19,19,21,21,21,21,21,21,21,22,22,22,24,24,25,25,27,27,27,1,1,1,1};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,10,10,10,10,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,16,16,16,16,16,16,16,16,16,17,17,19,19,20,20,22,22,22,22,22,22,22,22,22,22,22,22,23,23,23,25,25,26,26,28,28,28,2,2,2,2};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, CoursesPage page) {
 		jteOutput.writeContent("\r\n<html>\r\n    <head>\r\n        <meta charset=\"utf-8\" />\r\n        <title>Хекслет</title>\r\n    </head>\r\n    <body>\r\n        <h1>");
 		jteOutput.setContext("h1", null);
@@ -25,17 +26,31 @@ public final class JteindexGenerated {
 			jteOutput.setContext("input", null);
 			jteOutput.writeContent("\"");
 		}
-		jteOutput.writeContent("/>\r\n            <input type=\"submit\" value=\"Search\" />\r\n        </form>\r\n        <a href=\"/courses/build\">Добавить курс</a>\r\n        ");
+		jteOutput.writeContent("/>\r\n            <input type=\"submit\" value=\"Search\" />\r\n        </form>\r\n        <a");
+		var __jte_html_attribute_2 = NamedRoutes.buildCoursePath();
+		if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_2)) {
+			jteOutput.writeContent(" href=\"");
+			jteOutput.setContext("a", "href");
+			jteOutput.writeUserContent(__jte_html_attribute_2);
+			jteOutput.setContext("a", null);
+			jteOutput.writeContent("\"");
+		}
+		jteOutput.writeContent(">Добавить курс</a>\r\n        ");
 		if (page.getCourses().isEmpty()) {
 			jteOutput.writeContent("\r\n            <p>Пока не добавлено ни одного курса</p>\r\n        ");
 		} else {
 			jteOutput.writeContent("\r\n            ");
 			for (var course : page.getCourses()) {
-				jteOutput.writeContent("\r\n               <div>\r\n                   <h2><a href=\"/courses/");
-				jteOutput.setContext("a", "href");
-				jteOutput.writeUserContent(course.getId());
-				jteOutput.setContext("a", null);
-				jteOutput.writeContent("\">");
+				jteOutput.writeContent("\r\n               <div>\r\n                   <h2><a");
+				var __jte_html_attribute_3 = NamedRoutes.coursePath(course.getId());
+				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_3)) {
+					jteOutput.writeContent(" href=\"");
+					jteOutput.setContext("a", "href");
+					jteOutput.writeUserContent(__jte_html_attribute_3);
+					jteOutput.setContext("a", null);
+					jteOutput.writeContent("\"");
+				}
+				jteOutput.writeContent(">");
 				jteOutput.setContext("a", null);
 				jteOutput.writeUserContent(course.getName());
 				jteOutput.writeContent("</a></h2>\r\n                   <p>");

@@ -21,7 +21,7 @@
   <div>
     <label>
       Описание курса
-      <input type="text" required name="description" value="${page.getDescription()}" />
+      <input type="textarea" required name="description" value="${page.getDescription()}" />
     </label>
   </div>
   <input type="submit" value="Добавить курс" />
