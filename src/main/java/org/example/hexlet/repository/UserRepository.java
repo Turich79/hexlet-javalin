@@ -17,10 +17,10 @@ public class UserRepository {
     }
 
     public static List<User> search(String term) {
-        var courses = entities.stream()
+        var users = entities.stream()
                 .filter(entity -> entity.getName().startsWith(term))
                 .toList();
-        return courses;
+        return users;
     }
 
     public static Optional<User> find(Long id) {
@@ -32,5 +32,8 @@ public class UserRepository {
 
     public static List<User> getEntities() {
         return entities;
+    }
+
+    public static void delete(Long id) {
     }
 }

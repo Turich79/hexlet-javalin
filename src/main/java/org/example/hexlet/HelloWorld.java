@@ -3,6 +3,8 @@ package org.example.hexlet;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import io.javalin.validation.ValidationException;
+import org.example.hexlet.controller.CoursesController;
+import org.example.hexlet.controller.UsersController;
 import org.example.hexlet.dto.courses.BuildCoursePage;
 import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.dto.courses.CoursePage;
@@ -21,7 +23,8 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class HelloWorld {
     public static void main(String[] args) {
-        less13();
+        less15();
+//        less13();
 //        less12();
 //        less11();
 //        less10();
@@ -32,6 +35,32 @@ public class HelloWorld {
 //        less5();
 //        less4();
 //        less3();
+    }
+
+    public static void less15() {
+        var app = Javalin.create(config -> {
+            config.bundledPlugins.enableDevLogging();
+            config.fileRenderer(new JavalinJte());
+        });
+        app.get("/", ctx -> ctx.render("index.jte"));
+        ////Users
+        app.get(NamedRoutes.usersPath(), UsersController::index);
+        app.get(NamedRoutes.buildUserPath(), UsersController::build);
+        app.get("/users/{id}", UsersController::show);
+        app.post(NamedRoutes.usersPath(), UsersController::create);
+        app.get("/users/{id}/edit", UsersController::edit);
+        app.patch("/users/{id}", UsersController::update);
+        app.delete("/users/{id}", UsersController::destroy);
+        ////Courses
+        app.get(NamedRoutes.coursesPath(), CoursesController::index);
+        app.get(NamedRoutes.buildCoursePath(), CoursesController::build);
+        app.get("/courses/{id}", CoursesController::show);
+        app.post(NamedRoutes.coursesPath(), CoursesController::create);
+        app.get("/courses/{id}/edit", CoursesController::edit);
+        app.patch("/courses/{id}", CoursesController::update);
+        app.delete("/courses/{id}", CoursesController::destroy);
+
+        app.start(7070);
     }
 
     public static void less13() {
@@ -65,7 +94,7 @@ public class HelloWorld {
                         .get();
                 var user = new User(name, email, password);
                 UserRepository.save(user);
-                ctx.redirect("/users");
+                ctx.redirect(NamedRoutes.usersPath());
             } catch (ValidationException e) {
                 var page = new BuildUserPage(name, email, e.getErrors());
                 ctx.render("users/build.jte", model("page", page));
