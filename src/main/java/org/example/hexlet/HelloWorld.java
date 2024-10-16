@@ -5,6 +5,7 @@ import io.javalin.rendering.template.JavalinJte;
 import io.javalin.validation.ValidationException;
 import org.example.hexlet.controller.CoursesController;
 import org.example.hexlet.controller.UsersController;
+import org.example.hexlet.dto.MainPage;
 import org.example.hexlet.dto.courses.BuildCoursePage;
 import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.dto.courses.CoursePage;
@@ -23,7 +24,8 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class HelloWorld {
     public static void main(String[] args) {
-        less15();
+        less17();
+//        less15();
 //        less13();
 //        less12();
 //        less11();
@@ -35,6 +37,22 @@ public class HelloWorld {
 //        less5();
 //        less4();
 //        less3();
+    }
+
+    public static void less17() {
+        var app = Javalin.create(config -> {
+            config.bundledPlugins.enableDevLogging();
+            config.fileRenderer(new JavalinJte());
+        });
+
+        app.get("/", ctx -> {
+            var visited = Boolean.valueOf(ctx.cookie("visited"));
+            var page = new MainPage(visited);
+            ctx.render("index2.jte", model("page", page));
+            ctx.cookie("visited", String.valueOf(true));
+        });
+
+        app.start(7070);
     }
 
     public static void less15() {
