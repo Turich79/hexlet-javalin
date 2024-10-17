@@ -4,8 +4,10 @@ import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import io.javalin.validation.ValidationException;
 import org.example.hexlet.controller.CoursesController;
+import org.example.hexlet.controller.SessionsController;
 import org.example.hexlet.controller.UsersController;
 import org.example.hexlet.dto.MainPage;
+import org.example.hexlet.dto.MainPage2;
 import org.example.hexlet.dto.courses.BuildCoursePage;
 import org.example.hexlet.dto.users.UsersPage;
 import org.example.hexlet.dto.courses.CoursePage;
@@ -24,7 +26,8 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class HelloWorld {
     public static void main(String[] args) {
-        less17();
+        less18();
+//        less17();
 //        less15();
 //        less13();
 //        less12();
@@ -37,6 +40,27 @@ public class HelloWorld {
 //        less5();
 //        less4();
 //        less3();
+    }
+
+    private static void less18() {
+        var app = Javalin.create(config -> {
+            config.bundledPlugins.enableDevLogging();
+            config.fileRenderer(new JavalinJte());
+        });
+
+        app.get("/", ctx -> {
+            var page = new MainPage2(ctx.sessionAttribute("currentUser"));
+            ctx.render("index3.jte", model("page", page));
+        });
+
+        // Отображение формы логина
+        app.get("/sessions/build", SessionsController::build);
+        // Процесс логина
+        app.post("/sessions", SessionsController::create);
+        // Процесс выхода из аккаунта
+        app.delete("/sessions", SessionsController::destroy);
+
+        app.start(7070);
     }
 
     public static void less17() {
